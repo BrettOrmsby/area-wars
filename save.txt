@@ -1,0 +1,45 @@
+<template>
+  <div class="board">
+    <div v-for="(item, index) in store.board?.flat()" class="tile" :key="index" :class="item">
+      <Crown v-if="store.position[0] + store.position[1] * 9 === index" />
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { useGameStore } from '@/stores/game'
+import { Crown } from 'lucide-vue-next'
+const store = useGameStore()
+</script>
+
+<style scoped>
+.board {
+  display: grid;
+  grid-template: repeat(9, 1fr) / repeat(9, 1fr);
+  gap: var(--space-small);
+  height: min(50vh, 50vw);
+  width: min(50vh, 50vw);
+  flex-shrink: 0;
+}
+
+.tile {
+  background-color: var(--secondary-surface);
+  border-radius: var(--p-border-radius-sm);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player1 {
+  background-color: var(--p-red-400);
+}
+.player2 {
+  background-color: var(--p-blue-400);
+}
+
+svg {
+  display: block;
+  width: 70%;
+  height: 70%;
+}
+</style>
