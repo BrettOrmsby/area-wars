@@ -1,15 +1,15 @@
 <template>
-  <h1>play</h1>
+  <h1>Area Wars</h1>
   <GameOver />
   <main>
     <div class="board-sides-container">
       <PlayerSide player="player1" />
-      <GameBoard :board="store.board!" height="min(50vh, 50vw)" />
+      <GameBoard :board="store.board!" width="min(50vh, 50vw)" />
       <PlayerSide player="player2" />
     </div>
     <TurnIndicator />
     <div class="hands">
-      <div class="hand">
+      <div class="hand" v-auto-animate>
         <GameCard
           v-for="card in store.hand1"
           :key="`${card.direction}-${card.distance}`"
@@ -18,7 +18,7 @@
         />
       </div>
       <GameDeck />
-      <div class="hand">
+      <div class="hand" v-auto-animate>
         <GameCard
           v-for="card in store.hand2"
           :key="`${card.direction}-${card.distance}`"
@@ -28,12 +28,11 @@
       </div>
     </div>
     <div class="pass-turn-container">
-      <Button v-if="!store.canMakePlay" @click="store.nextTurn()" severity="secondary"
+      <Button v-show="!store.canMakePlay" @click="store.nextTurn()" severity="secondary"
         >Pass Turn</Button
       >
     </div>
   </main>
-  <button @click="store.isGameOver = true">Over</button>
 </template>
 
 <script lang="ts" setup>
@@ -52,6 +51,9 @@ onMounted(store.setup)
 </script>
 
 <style scoped>
+h1 {
+  text-align: center;
+}
 .board-sides-container,
 .hands {
   display: flex;
@@ -77,5 +79,19 @@ onMounted(store.setup)
 .pass-turn-container {
   text-align: center;
   margin-top: var(--space-small);
+}
+
+@media screen and (max-width: 550px) {
+  .hands {
+    flex-direction: column;
+  }
+  .board-sides-container {
+    flex-wrap: wrap;
+  }
+  .board-sides-container :deep(.board) {
+    order: 2;
+    width: 100%;
+    max-width: 280px;
+  }
 }
 </style>

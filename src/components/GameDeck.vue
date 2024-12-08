@@ -27,7 +27,6 @@ const draw = () => {
 <style scoped>
 .deck {
   background-color: var(--secondary-surface);
-  border: 1px solid var(--secondary-surface);
   border-radius: var(--p-border-radius-sm);
   padding: var(--space-large);
   display: flex;
@@ -38,13 +37,13 @@ const draw = () => {
   transition-duration: 0.2s;
 }
 .deck:not(.canDraw) {
-  opacity: 0.6;
+  opacity: 0.4;
 }
 .deck.canDraw {
   cursor: pointer;
 }
 .deck.canDraw:hover {
-  border-color: var(--p-primary-400);
+  background-color: var(--secondary-surface-hover);
 }
 .left {
   width: 100%;
@@ -59,5 +58,23 @@ svg {
   width: 100%;
   display: block;
   text-align: right;
+}
+@media screen and (max-width: 650px) {
+  svg {
+    width: 2em;
+    height: 2em;
+  }
+}
+@media screen and (max-width: 550px) {
+  .deck {
+    order: 2;
+  }
+  .right {
+    display: none;
+  }
+  .left {
+    text-align: center;
+    margin-bottom: calc(var(--space-small) / 2);
+  }
 }
 </style>

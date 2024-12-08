@@ -45,6 +45,7 @@ export const useGameStore = defineStore('game', () => {
   const board = ref<Board>()
   const position = ref<Position>([4, 4])
   const canMakePlay = computed(() => getCanMakePlay(isPlayer1Turn.value ? 'player1' : 'player2'))
+  const hintCard = ref<Card>()
 
   function setup() {
     isGameOver.value = false
@@ -82,11 +83,13 @@ export const useGameStore = defineStore('game', () => {
     isPlayer1Turn.value = true
 
     position.value = [4, 4]
-    const emptyBoard: Board = [] as any
+    const emptyBoard = []
     for (let i = 0; i < 9; i++) {
       emptyBoard.push(new Array(9).fill('empty') as BoardRow)
     }
-    board.value = emptyBoard
+    board.value = emptyBoard as Board
+
+    hintCard.value = undefined
   }
 
   function draw() {
@@ -96,7 +99,7 @@ export const useGameStore = defineStore('game', () => {
     if (isPlayer1Turn.value) {
       hand1.value.push(deck.value.shift()!)
     } else {
-      hand2.value.push(deck.value.shift()!)
+      hand2.value.unshift(deck.value.shift()!)
     }
     if (deck.value.length === 0) {
       shuffle()
@@ -182,7 +185,7 @@ export const useGameStore = defineStore('game', () => {
       return
     }
     const [x, y] = getNewPosition(card)
-    position.value = [x as any, y as any]
+    position.value = [x as Position[number], y as Position[number]]
     board.value![y][x] = player
 
     if (player === 'player1') {
@@ -247,8 +250,9 @@ export const useGameStore = defineStore('game', () => {
   function nextTurn() {
     isPlayer1Turn.value = !isPlayer1Turn.value
     isSwapSelected.value = false
+    hintCard.value = undefined
 
-    if (!getCanMakePlay('player1') || !getCanMakePlay('player2')) {
+    if (!getCanMakePlay('player1') && !getCanMakePlay('player2')) {
       isGameOver.value = true
     }
     /*
@@ -273,12 +277,14 @@ export const useGameStore = defineStore('game', () => {
     board,
     position,
     canMakePlay,
+    hintCard,
     draw,
     play,
     setup,
     toggleSwapSelected,
     getPoints,
     getIsPlayable,
+    getNewPosition,
     nextTurn,
   }
 })

@@ -3,6 +3,8 @@
     class="card"
     :class="{ [player]: true, isTurn, isPlayable: store.getIsPlayable(card, player) }"
     @click="store.play(card, player)"
+    @mouseenter="showPlaceHint"
+    @mouseleave="() => (store.hintCard = undefined)"
   >
     <strong class="left">{{ card.distance }}</strong>
     <component :is="icons[card.direction]" />
@@ -44,7 +46,12 @@ const isTurn = computed(
     (props.player === 'player2' && !store.isPlayer1Turn),
 )
 
-// TODO: when hover over, show where the peice would be added
+const showPlaceHint = () => {
+  if (!isTurn.value || !store.getIsPlayable(props.card, props.player)) {
+    return
+  }
+  store.hintCard = props.card
+}
 </script>
 
 <style scoped>
@@ -56,7 +63,6 @@ const isTurn = computed(
 }
 .card {
   background-color: var(--secondary-surface);
-  border: 1px solid var(--secondary-surface);
   border-radius: var(--p-border-radius-sm);
   padding: var(--space-large);
   display: flex;
@@ -71,13 +77,15 @@ const isTurn = computed(
 }
 .card.isTurn:not(.isPlayable),
 .card:not(.isTurn) {
-  opacity: 0.6;
+  /* this is to avoid the opacity of the auto animate */
+  background-color: color-mix(in srgb, var(--secondary-surface), black 20%);
+  color: color-mix(in srgb, var(--theme-color), black 20%);
 }
 .card.isTurn.isPlayable {
   cursor: pointer;
 }
 .card.isTurn.isPlayable:hover {
-  border-color: var(--theme-color);
+  background-color: var(--secondary-surface-hover);
 }
 .left {
   width: 100%;
@@ -92,5 +100,20 @@ svg {
   width: 100%;
   display: block;
   text-align: right;
+}
+@media screen and (max-width: 650px) {
+  svg {
+    width: 2em;
+    height: 2em;
+  }
+}
+@media screen and (max-width: 550px) {
+  .right {
+    display: none;
+  }
+  .left {
+    text-align: center;
+    margin-bottom: calc(var(--space-small) / 2);
+  }
 }
 </style>

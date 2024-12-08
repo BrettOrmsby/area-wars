@@ -1,7 +1,11 @@
 :root {
   --space-small: 0.5rem;
   --space-large: 1rem;
-  --secondary-surface: light-dark(var(--p-surface-200), var(--p-surface-800))
+  --secondary-surface: light-dark(var(--p-surface-200), var(--p-surface-800));
+  --secondary-surface: var(--p-button-secondary-background);
+  --secondary-surface-color: var(--p-button-secondary-color);
+  --secondary-surface-hover: var(--p-button-secondary-hover-background);
+  --secondary-surface-hover-color: var(--p-button-secondary-hover-color):
 }
 
 html {

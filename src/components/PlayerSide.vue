@@ -8,7 +8,7 @@
       :aria-disabled="!isSwapAllowed"
       :class="{ isSelected: store.isSwapSelected }"
     >
-      <strong>Overthrow</strong>
+      <strong class="overflow">Overthrow</strong>
       <Swords />
     </div>
     <div class="swaps-left-container">
@@ -77,12 +77,10 @@ h2,
 }
 
 .swap-card[aria-disabled='false']:hover {
-  border: 1px solid var(--theme-color);
+  background-color: var(--secondary-surface-hover);
 }
-
-.isSelected[aria-disabled='false'] svg {
-  -webkit-animation: jello-horizontal 1.2s ease-in-out infinite both;
-  animation: jello-horizontal 1.2s ease-in-out infinite both;
+.swap-card.isSelected[aria-disabled='false'] {
+  border: 1px solid var(--theme-color);
 }
 
 svg {
@@ -106,9 +104,26 @@ svg {
 .swaps-left-container .filled {
   background-color: var(--theme-color);
 }
-.isBeingUsed {
-  -webkit-animation: fade-to-used 2.4s ease-in-out infinite both;
-  animation: fade-to-used 2.4s ease-in-out infinite both;
+
+@media screen and (max-width: 650px) {
+  svg {
+    width: 2em;
+    height: 2em;
+  }
+  .overflow {
+    font-size: 0.8em;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .isSelected[aria-disabled='false'] svg {
+    -webkit-animation: jello-horizontal 1.2s ease-in-out infinite both;
+    animation: jello-horizontal 1.2s ease-in-out infinite both;
+  }
+  .isBeingUsed {
+    -webkit-animation: fade-to-used 2.4s ease-in-out infinite both;
+    animation: fade-to-used 2.4s ease-in-out infinite both;
+  }
 }
 
 @-webkit-keyframes fade-to-used {

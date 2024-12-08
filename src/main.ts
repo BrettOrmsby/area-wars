@@ -1,9 +1,8 @@
 import './assets/main.css'
 /*
-TODO: highlight place when hover over a card
+TODO
 * do the home page
 * do the instructions
-* animations (number roller?)
 * share game when done (svg?) or history video like thing?
 */
 import { createApp } from 'vue'
@@ -11,6 +10,7 @@ import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
 import Aura from '@primevue/themes/aura'
 import { definePreset } from '@primevue/themes'
+import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 
 import App from './App.vue'
 import router from './router'
@@ -19,6 +19,7 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
+app.use(autoAnimatePlugin)
 
 const Noir = definePreset(Aura, {
   semantic: {
