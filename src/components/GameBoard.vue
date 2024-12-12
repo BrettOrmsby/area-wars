@@ -1,7 +1,7 @@
 <template>
   <svg class="board" viewBox="0 0 368 368" xmlns="http://www.w3.org/2000/svg" v-auto-animate>
     <rect x="0" y="0" width="100%" height="100%" fill="light-dark(#fff, #1C1B22)" />
-    <g v-for="(row, y) in board" :key="y">
+    <g v-for="(row, y) in store.board" :key="y">
       <rect
         v-for="(item, x) in row"
         :key="x"
@@ -30,12 +30,14 @@
 </template>
 
 <script lang="ts" setup>
-import { useGameStore, type Board } from '@/stores/game'
+import { useGameStore, useGameCopyStore } from '@/stores/game'
 import { Crown } from 'lucide-vue-next'
 import { computed } from 'vue'
-defineProps<{ board: Board }>()
-const store = useGameStore()
-const hintCardPosition = computed(() => store.hintCard && store.getNewPosition(store.hintCard))
+const { isCopy = false } = defineProps<{ isCopy?: boolean }>()
+const store = computed(() => (isCopy ? useGameCopyStore() : useGameStore()))
+const hintCardPosition = computed(
+  () => store.value.hintCard && store.value.getNewPosition(store.value.hintCard),
+)
 </script>
 
 <style scoped>
@@ -45,6 +47,12 @@ const hintCardPosition = computed(() => store.hintCard && store.getNewPosition(s
 .tile {
   transition-duration: 0.2s;
   fill: var(--secondary-surface);
+}
+.lucide {
+  transition:
+    x 0.2s ease,
+    y 0.2s ease,
+    fill 0.2s ease;
 }
 .player1 {
   fill: var(--p-red-400);

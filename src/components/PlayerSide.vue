@@ -105,7 +105,7 @@ svg {
   background-color: var(--theme-color);
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 675px) {
   svg {
     width: 2em;
     height: 2em;

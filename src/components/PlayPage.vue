@@ -1,10 +1,19 @@
 <template>
-  <h1>Area Wars</h1>
-  <GameOver />
   <main>
+    <ConfirmDialog />
+    <h1><span class="red">Area</span> <span class="blue">Wars</span></h1>
+    <div class="button-container">
+      <Button aria-label="Rules" severity="secondary" @click="() => (states.isRulesOpen = true)">
+        <template #icon="iconClass"> <Info :class="iconClass.class" /> </template
+      ></Button>
+      <Button aria-label="Restart" severity="secondary" @click="restart">
+        <template #icon="iconClass"> <RotateCw :class="iconClass.class" /> </template
+      ></Button>
+    </div>
+    <GameOver />
     <div class="board-sides-container">
       <PlayerSide player="player1" />
-      <GameBoard :board="store.board!" width="min(50vh, 50vw)" />
+      <GameBoard :board="store.board!" :position="store.position" width="min(50vh, 50vw)" />
       <PlayerSide player="player2" />
     </div>
     <TurnIndicator />
@@ -43,16 +52,57 @@ import PlayerSide from '@/components/PlayerSide.vue'
 import TurnIndicator from '@/components/TurnIndicator.vue'
 import Button from 'primevue/button'
 import { useGameStore } from '@/stores/game'
-import { onMounted } from 'vue'
+import { useStatesStore } from '@/stores/states'
 import GameOver from '@/components/GameOver.vue'
+import { Info, RotateCw } from 'lucide-vue-next'
+
+import ConfirmDialog from 'primevue/confirmdialog'
+import { useConfirm } from 'primevue/useconfirm'
+const confirm = useConfirm()
 
 const store = useGameStore()
-onMounted(store.setup)
+const states = useStatesStore()
+
+const restart = () => {
+  if (!store.board?.flat().reduce((prev, curr) => prev || curr !== 'empty', false)) {
+    store.setup()
+    return
+  }
+  confirm.require({
+    message: 'Are you sure you want to restart?',
+    header: 'Restart',
+    rejectProps: {
+      label: 'Cancel',
+      severity: 'secondary',
+    },
+    acceptProps: {
+      label: 'Restart',
+    },
+    accept: () => {
+      store.setup()
+    },
+  })
+}
 </script>
 
 <style scoped>
 h1 {
   text-align: center;
+}
+.red {
+  color: var(--p-red-400);
+}
+.blue {
+  color: var(--p-blue-400);
+}
+.button-container {
+  position: fixed;
+  right: var(--space-large);
+  top: var(--space-large);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-small);
 }
 .board-sides-container,
 .hands {

@@ -101,7 +101,7 @@ svg {
   display: block;
   text-align: right;
 }
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 675px) {
   svg {
     width: 2em;
     height: 2em;
