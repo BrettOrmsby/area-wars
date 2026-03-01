@@ -2,8 +2,8 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
-import Aura from '@primevue/themes/aura'
-import { definePreset } from '@primevue/themes'
+import Aura from '@primeuix/themes/aura'
+import { definePreset } from '@primeuix/themes'
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 import ConfirmationService from 'primevue/confirmationservice'
 
@@ -63,10 +63,6 @@ const Noir = definePreset(Aura, {
   },
 })
 
-app.use(PrimeVue, {
-  theme: {
-    preset: Noir,
-  },
-})
+app.use(PrimeVue, { theme: { preset: Noir } })
 
 app.mount('#app')
