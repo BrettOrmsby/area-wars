@@ -35,5 +35,8 @@
     "vite": "^6.0.9",
     "vite-plugin-vue-devtools": "^7.6.5",
     "vue-tsc": "^2.1.10"
+  },
+  "overrides": {
+    "picomatch": "^4.0.3"
   }
 }
